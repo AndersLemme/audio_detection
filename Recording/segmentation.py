@@ -1,4 +1,4 @@
-import librosa, librosa.display # type: ignore
+import librosa #, librosa.display # type: ignore
 #import IPython.display as ipd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,7 +45,7 @@ plt.title("Waveform and Amplitude Envelope")
 plt.legend()
 plt.show()
 
-plt.savefig(my_path + f"../Audiofiles/{filename}.png")
+plt.savefig('18_bags_s_48kHz.png')#my_path + f"../Audiofiles/{filename}.png")
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):

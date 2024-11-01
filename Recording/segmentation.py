@@ -8,8 +8,10 @@ import wave
 filename='18_bags_48kHz'
 
 #file = os.path.join("..", "Audiofiles", "140g_run2_Pop.wav")
-my_path = os.path.abspath(os.path.dirname(__file__))
+my_path = os.path.abspath(os.path.dirname(__file__))#, "../Audiofiles") #18_bags_s_48kHz.png") #file storage location
 file = os.path.join(my_path, "../Audiofiles/18_bags_s_48kHz.wav") #140g_run2_Pop.wav
+png_path = os.path.join(my_path, '../Audiofiles/18_bags_s_48kHz.png') #store png path
+
 data, sr = librosa.load(file, sr=None) #use original sample rate (sr=44100)
 
 print(data)
@@ -43,9 +45,10 @@ plt.xlabel("Time (samples)")
 plt.ylabel("Amplitude")
 plt.title("Waveform and Amplitude Envelope")
 plt.legend()
+plt.savefig( png_path, format='png' )#my_path + f"../Audiofiles/{filename}.png")
 plt.show()
 
-plt.savefig('18_bags_s_48kHz.png')#my_path + f"../Audiofiles/{filename}.png")
+
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):
@@ -65,21 +68,21 @@ def save_wav(audio, sample_rate, output_path):
 
 #enumarate to store a index. loop through peak an save segments
 for i, peak in enumerate(peak_indices):
-        #define start and en fo segment, make sre not to exceed bounds
-        start = max(0,peak - half_segment)
-        end = min(len(data), peak+ half_segment)
-        segment = data[start:end]
+    #define start and en fo segment, make sre not to exceed bounds
+    start = max(0,peak - half_segment)
+    end = min(len(data), peak+ half_segment)
+    segment = data[start:end]
 
-        #Ensure that segmants are exactly defined segment duration
-        if len(segment) < segment_samples:
-                segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
+    #Ensure that segmants are exactly defined segment duration
+    if len(segment) < segment_samples:
+            segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
 
-        #save the segment as a new file 
-        #file = os.path.join(my_path, "../Audiofiles/18_bags_s_48kHz.wav") #140g_run2_Pop.wav
-        path = os.path.join(my_path, f"../Audiofiles/18bags_segment_{i}.wav")
-        #path = f"segment_{i}.wav"
-        save_wav(segment,sr, path)
-        print(f"segment_{i}.wav saved")
+    #save the segment as a new file 
+    #file = os.path.join(my_path, "../Audiofiles/18_bags_s_48kHz.wav") #140g_run2_Pop.wav
+    path = os.path.join(my_path, f"../Audiofiles/18bags_segment_{i}.wav")
+    #path = f"segment_{i}.wav"
+    save_wav(segment,sr, path)
+print(f"segments.wav saved")
 
 #-----------------"
 # "

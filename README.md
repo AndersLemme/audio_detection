@@ -11,11 +11,19 @@ So i decided to be more structured and created this Repo for Anomaly detection i
 
 ## Requirements
  - Python
-	- Librosa
+	- librosa
+	- wave
+	- numpy
 	- TensorFlow
  - Microphone
 
+# Script description
 
+## New scripts
+**segmentation.py**: This script takes a wav file and segment all high amplitude sounds and store them in a segmented file (1s).
+
+## Old scripts
+**auproc.py**: audio processing, amplitude envilope, 0-crossing, RSME - ran on file 140g_run2_pop.wav)
 
 # Notes of previous work.. (for myself)
 locally:
@@ -24,5 +32,5 @@ locally:
 
 ---
 
-**auproc.py**: audio processing, amplitude envilope, 0-crossing, RSME - ran on file 140g_run2_pop.wav)
+
 

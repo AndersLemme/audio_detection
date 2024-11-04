@@ -5,12 +5,12 @@ import numpy as np
 import os
 import wave
 
-filename='18_bags_48kHz'
+filename='140g_run2_Pop'
 
 #file = os.path.join("..", "Audiofiles", "140g_run2_Pop.wav")
 my_path = os.path.abspath(os.path.dirname(__file__))#, "../Audiofiles") #18_bags_s_48kHz.png") #file storage location
-file = os.path.join(my_path, "../Audiofiles/18_bags_s_48kHz.wav") #140g_run2_Pop.wav
-png_path = os.path.join(my_path, '../Audiofiles/18_bags_s_48kHz.png') #store png path
+file = os.path.join(my_path, "../Audiofiles/"+filename+".wav") #140g_run2_Pop.wav
+png_path = os.path.join(my_path, '../Audiofiles/'+filename+'.png') #store png path
 
 data, sr = librosa.load(file, sr=None) #use original sample rate (sr=44100)
 
@@ -79,10 +79,11 @@ for i, peak in enumerate(peak_indices):
 
     #save the segment as a new file 
     #file = os.path.join(my_path, "../Audiofiles/18_bags_s_48kHz.wav") #140g_run2_Pop.wav
-    path = os.path.join(my_path, f"../Audiofiles/18bags_segment_{i}.wav")
+    path = os.path.join(my_path, f"../Audiofiles/{filename}_segment_{i}.wav")
     #path = f"segment_{i}.wav"
     save_wav(segment,sr, path)
 print(f"segments.wav saved")
+
 
 #-----------------"
 # "
@@ -179,13 +180,5 @@ print(f"segments.wav saved")
 ##    ft = np.fft.fft(data)
 ##    magnitude_spectrum = np.abs(ft)
 ##    
-##    #plot
-##    plt.figure()
-##    frequency = np.linspace(0, sr, len(magnitude_spectrum))
-##    num_frequency_bins = int(len(frequency)* f_ratio)
-##    plt.plot(frequency[:num_frequency_bins], magnitude_spectrum[:num_frequency_bins])
-##    plt.xlabel("Frequency (Hz)")
-##    plt.title(title)
-##    plt.show()
 ##
 ##plot_magnitude_spectrum(data, file, sr, 0.1)

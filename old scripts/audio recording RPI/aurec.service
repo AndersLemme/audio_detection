@@ -1,0 +1,13 @@
+[Unit]
+Description=aurec.py is a audio detection and recording script used to detect bag pops with the amplitude of the signal.
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/pi/pop-detection/aurec.py
+Restart=on-failure
+RestartSec=30s
+
+[Install]
+WantedBy=multi-user.target
+

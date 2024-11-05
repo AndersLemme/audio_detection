@@ -9,8 +9,8 @@ filename='21_bags_m_48kHz'
 
 #file = os.path.join("..", "Audiofiles", "140g_run2_Pop.wav")
 my_path = os.path.abspath(os.path.dirname(__file__))#, "../Audiofiles") 
-file = os.path.join(my_path, "../Audiofiles/"+filename+".wav") #140g_run2_Pop.wav
-png_path = os.path.join(my_path, '../Audiofiles/fig_'+filename+'.png') #store png path
+file = os.path.join(my_path, "../audiofiles/"+filename+".wav") #140g_run2_Pop.wav
+png_path = os.path.join(my_path, '../audiofiles/fig_'+filename+'.png') #store png path
 
 data, sr = librosa.load(file, sr=None) #use original sample rate (sr=44100)
 
@@ -45,7 +45,7 @@ plt.xlabel("Time (samples)")
 plt.ylabel("Amplitude")
 plt.title("Waveform and Amplitude Envelope")
 plt.legend()
-plt.savefig( png_path, format='png' )#my_path + f"../Audiofiles/{filename}.png")
+plt.savefig( png_path, format='png' )
 plt.show()
 
 
@@ -78,6 +78,6 @@ for i, peak in enumerate(peak_indices):
             segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
 
     #save the segment as a new file 
-    path = os.path.join(my_path, f"../Audiofiles/{filename}_segment_{i}.wav")
+    path = os.path.join(my_path, f"../audiofiles/{filename}_segment_{i}.wav")
     save_wav(segment,sr, path)
 print("files Saved sucessfully :)")

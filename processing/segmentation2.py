@@ -9,8 +9,8 @@ import wave
 my_path = os.path.abspath(os.path.dirname(__file__))
 
 #Input/output directory
-input_directory = os.path.join(my_path, "../Audiofiles/original data/nopop")
-output_directory = os.path.join(my_path, "../Audiofiles/nopop")
+input_directory = os.path.join(my_path, "../audiofiles/original data/nopop")
+output_directory = os.path.join(my_path, "../audiofiles/nopop")
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):

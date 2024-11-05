@@ -7,7 +7,7 @@ So i decided to be more structured and created this Repo for Anomaly detection i
 ## Folder Structure
  1. Audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.
  2. Model 	- Is the folder with the python scripts that creates the CNN-models.
- 3. Recording	- Contain all scripts for recording or segmentation of wav files.
+ 3. Recording	- Contain all scripts for recording or segmentation of wav files. (please change name to processing or something)
 
 ## Requirements
  - Python
@@ -20,10 +20,11 @@ So i decided to be more structured and created this Repo for Anomaly detection i
 # Script description
 
 ## New scripts
-**segmentation.py**: This script takes a wav file and segment all high amplitude sounds and store them in a segmented file (1s).
+**segmentation.py**: This script takes a wav file and segment all high amplitude sounds and store them in a segmented file (1s). \
+**segmentation2.py**: This script takes multiple  wav file and segment all high amplitude sounds and store them in a segmented file (1s).\
 
 ## Old scripts
-**auproc.py**: audio processing, amplitude envilope, 0-crossing, RSME - ran on file 140g_run2_pop.wav)
+**auproc.py**: audio processing, amplitude envilope, 0-crossing, RSME - ran on file 140g_run2_pop.wav) \
 
 # Notes of previous work.. (for myself)
 locally:

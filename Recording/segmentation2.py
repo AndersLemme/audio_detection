@@ -45,7 +45,7 @@ for filename in os.listdir(input_directory):
 
       #Define peak in amplitude
       amplitude_envelope = np.abs(data)
-      peak_indices = librosa.util.peak_pick(amplitude_envelope,pre_max=1000,post_max=1000,pre_avg=1000, post_avg=1000, delta=0.3, wait=1000)
+      peak_indices = librosa.util.peak_pick(amplitude_envelope,pre_max=1000,post_max=1000,pre_avg=1000, post_avg=1000, delta=0.35, wait=1000)
 
       #define half the segment to capture Half before and after the peak
       half_segment =segment_samples // 2

@@ -9,8 +9,8 @@ import wave
 my_path = os.path.abspath(os.path.dirname(__file__))
 
 #Input/output directory
-input_directory = os.path.join(my_path, "../Audiofiles/audio_input")
-output_directory = os.path.join(my_path, "../Audiofiles")
+input_directory = os.path.join(my_path, "../Audiofiles/original data/nopop")
+output_directory = os.path.join(my_path, "../Audiofiles/nopop")
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):
@@ -63,7 +63,7 @@ for filename in os.listdir(input_directory):
       plt.title("Waveform and Amplitude Envelope")
       plt.legend()
       #plt.savefig( png_path, format='png' )#my_path + f"../Audiofiles/{filename}.png")
-      plt.show()
+      #plt.show()
 
       #enumarate to store a index. loop through peak an save segments
       for i, peak in enumerate(peak_indices):
@@ -76,8 +76,8 @@ for filename in os.listdir(input_directory):
         if len(segment) < segment_samples:
             segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
 
-        #save the segment as a new file 
-        path = os.path.join(my_path, f"../Audiofiles/{filename}_segment_{i}.wav")
+        #save the segment as a new file     
+        path = os.path.join(my_path, f"../Audiofiles/{filename}")
         save_wav(segment,sr, path)
         print("files Saved sucessfully :)")
 

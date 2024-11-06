@@ -5,18 +5,22 @@ Also I have created scripts to collect data with different methods. And tried to
 So i decided to be more structured and created this Repo for Anomaly detection in audio.
 
 ## Folder Structure
- 1. Audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.
- 2. Model 	- Is the folder with the python scripts that creates the CNN-models.
- 3. Recording	- Contain all scripts for recording or segmentation of wav files. (please change name to processing or something)
+ 1. audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.
+ 2. model 	- Is the folder with the python scripts that creates the CNN-models.
+ 3. processing	- Contain all scripts for recording, segmentation of wav files or processing.
+ 4. images - Project images
 
 ## Requirements
+ - Microphone
+ - Decent CPU (I dont have specifics)
  - Python
 	- librosa
-	- wave
-	- numpy
 	- TensorFlow
+	- matplotlib.pyplot
 	- opcua (optinal)
- - Microphone
+	- wave
+	- scipy (fft & wavfile)
+	- numpy
 
 # Script description
 
@@ -43,7 +47,6 @@ The image below show how the recording was setup with a raspberry PI.
 
 # Notes of previous work.. (for myself)
 locally:
-1. Pop folder contains recording and precessing code.
 2. Popop folder contains machine learning scipts and models.
 
 ---

@@ -24,7 +24,8 @@ So i decided to be more structured and created this Repo for Anomaly detection i
 
 # Script description
 
-## Model
+## Model and model preperation
+
 
 ## Processing
 
@@ -48,8 +49,10 @@ The image below show how the recording was setup with a raspberry PI.
 
 # Notes of previous work.. (for myself)
 locally:
-2. Popop folder contains machine learning scipts and models.
+Popop folder contains machine learning scipts and models.
  - I think that i used au1 for feature extraction and au2 for model training.
+
+MFCC[0] represents the overall energy (sometimes excluded for CNNs to avoid energy bias).
 
 ---
 

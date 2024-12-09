@@ -31,7 +31,6 @@ def load_data(dataset_path):
   
 def prepare_data(test_size, validation_size):
     
-    print("HELLLOOOOOO")
     #load data
     X, y = load_data(JSON_PATH)
     
@@ -100,13 +99,19 @@ def predict(model, X, y):
     prediction = model.predict(X)
     
     predicted_index = np.argmax(prediction, axis = 1) #wtf is this?!?
-    
     print("Expected index: {}, Predicted index: {}".format(y, int(np.round(prediction))))
+    print("Not rounded Prediction = ", prediction )
+    #print("type of prediction ",type(prediction))
+    #print("type of expectation ", type())
+    if(y == int(np.round(prediction))):
+        print("Correct")
+    else:
+        print("False prediction!")
     
 if __name__ == "__main__":
     
     #create train, validation and test sets
-    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_data(0.25, 0.20) #25, 20
+    X_train, X_validation, X_test, y_train, y_validation, y_test = prepare_data(0.10, 0.10) #25, 20
     
     #build CNN
     input_shape = (X_train.shape[1], X_train.shape[2], X_train.shape[3]) #since depth = 1, isnt it unessacary to include it?!?
@@ -124,7 +129,7 @@ if __name__ == "__main__":
     callbacks=[
         tensorflow.keras.callbacks.EarlyStopping(
             monitor='val_loss',
-            patience=8,
+            patience=3,
             restore_best_weights=True
         )
     ]
@@ -137,14 +142,19 @@ if __name__ == "__main__":
     plt.title("Loss")
 
     model.summary()
-    model.save('22_feb_model_3_reg.model')
-    
+    #Using keras format
+    model.save('test2.keras')
+    #Using keras HDF5
+    #model.save('initial_test.h5')
+
+
     #evaluate the CNN on the test set
     test_error, test_accuracy = model.evaluate(X_test, y_test)
     print("Accuracy on test set is: {}".format(test_accuracy))
     print("with error of {}".format(test_error))
     
     #Make prediction on a sample
+    print("Testset lenght = ", len(X_test))
     i=0
     for i in range(len(X_test)):
         X = X_test[i]

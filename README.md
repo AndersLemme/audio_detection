@@ -1,8 +1,8 @@
 # audio_detection
 
-Since I have worked with this project localy i have stored and tested loads of things with different audio files different Convolutional Neural Network (CNN) models.
-Also I have created scripts to collect data with different methods. And tried to implement semi-working CNN to collect data with a better filter than amplitude threshold.
-So i decided to be more structured and created this Repo for Anomaly detection in audio.
+Since I have worked with this project localy i have stored and tested loads of things with different audio files and different Convolutional Neural Network (CNN) models.
+Also I have created scripts to collect data with different methods. And tried to implement semi-working CNN to collect data, with a better filter than amplitude threshold.
+So I decided to be more structured and created this Repo for Anomaly detection with audio, re-trace my steps and keep track of my project changes.
 
 ## Folder Structure
  1. audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.
@@ -24,10 +24,14 @@ So i decided to be more structured and created this Repo for Anomaly detection i
 
 # Script description
 
-## Model and model preperation
+## Model
+This folder contains scripts for training, running and actually also model preperation (store MFCC's).
 
+- **au1.py**: This script is used to read trough wav files, convert them to MFCC's and store them in data.json.
+- **au2.py**: This script reads the data.json and train a CNN model.keras to distinguish between pop and no-pop
 
 ## Processing
+This folder contains python scripts for recording, preprocessing, segmentation and other scripts used for analysis.
 
 ### New scripts 
 - **segmentation.py**: This script takes a wav file and segment all high amplitude sounds and store them in a segmented file (1s).

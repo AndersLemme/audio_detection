@@ -14,7 +14,7 @@ So I decided to be more structured and created this Repo for Anomaly detection w
  - Microphone
  - Decent CPU (I dont have specifics)
  - Python
-	- librosa
+	- librosa (python 3.10 or erlier version. Alternatively use torchaudio)
 	- TensorFlow
 	- matplotlib.pyplot
 	- opcua (optinal)

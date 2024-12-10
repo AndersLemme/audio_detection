@@ -9,8 +9,8 @@ import wave
 my_path = os.path.abspath(os.path.dirname(__file__))
 
 #Input/output directory
-input_directory = os.path.join(my_path, "../audiofiles/original data/nopop")
-output_directory = os.path.join(my_path, "../audiofiles/nopop")
+input_directory = os.path.join(my_path, "../audiofiles/original data/pop")
+output_directory = os.path.join(my_path, "../audiofiles/1/new/")
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):
@@ -62,14 +62,20 @@ for filename in os.listdir(input_directory):
       plt.ylabel("Amplitude")
       plt.title("Waveform and Amplitude Envelope")
       plt.legend()
-      #plt.savefig( png_path, format='png' )#my_path + f"../Audiofiles/{filename}.png")
-      #plt.show()
 
       #enumarate to store a index. loop through peak an save segments
       for i, peak in enumerate(peak_indices):
         #define start and en fo segment, make sre not to exceed bounds
         start = max(0,peak - half_segment)
         end = min(len(data), peak+ half_segment)
+
+        #Adjust tge segment if it's not centered due to bounds
+        if start == 0: #peak is near the start of the file
+             end = min(len(data), segment_samples)
+        elif end == len(data): #peak is near the end of the file
+             start = max(0, len(data)-segment_samples)
+        
+        #Define segment
         segment = data[start:end]
 
         #Ensure that segmants are exactly defined segment duration
@@ -77,7 +83,7 @@ for filename in os.listdir(input_directory):
             segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
 
         #save the segment as a new file     
-        path = os.path.join(my_path, f"../Audiofiles/{filename}")
+        path = os.path.join(my_path, f"{output_directory}{filename}")
         save_wav(segment,sr, path)
         print("files Saved sucessfully :)")
 

@@ -16,7 +16,7 @@ from keras.regularizers import l2
 import pandas as pd
 import matplotlib.pyplot as plt
 
-JSON_PATH = "data.json"
+JSON_PATH = "data1.json"
 
 
 def load_data(dataset_path):

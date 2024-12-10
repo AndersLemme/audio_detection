@@ -8,7 +8,7 @@ import json
 import math
 
 DATASET_PATH = "../audiofiles/dataset/"
-JSON_PATH = "./data.json"
+JSON_PATH = "./data1.json"
 
 SAMPLE_RATE = 48000
 DURATION = 1.0
@@ -63,6 +63,7 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
                     plt.figure()
                     librosa.display.specshow(mfcc, x_axis="time", sr=sr)
                     plt.colorbar(format="%+2f")
+                    plt.title(f)
                     #plt.show()
                     
                     

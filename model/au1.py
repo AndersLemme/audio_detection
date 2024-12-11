@@ -8,7 +8,7 @@ import json
 import math
 
 DATASET_PATH = "../audiofiles/dataset/"
-JSON_PATH = "./data1.json"
+JSON_PATH = "./data.json"
 
 SAMPLE_RATE = 48000
 DURATION = 1.0
@@ -67,7 +67,7 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
                     #plt.show()
                     
                     
-                    #store mfcc for segment if it has the expected lenght (eaxuel number in each raining data)
+                    #store mfcc for segment if it has the expected lenght (acual number in each raining data)
                     if len(mfcc) == (expected_number_mfcc_per_segment): #+1 
                         data["mfcc"].append(mfcc.tolist())
                         data["labels"].append(i-1)
@@ -75,7 +75,7 @@ def save_mfcc(dataset_path, json_path, n_mfcc=13, n_fft=2048, hop_length=512, nu
                     else:
                         print("mfcc dont match the expexted lenght. Adjust either input files or duration(e.g.) in the script to match the input files.")
     plt.show()
-    #store data ain JSON format  
+    #store data in JSON format  
     with open(json_path, "w") as fp:
         json.dump(data, fp, indent=4)
                     

@@ -17,10 +17,15 @@ import matplotlib.pyplot as plt
 
 #my_path = os.path.abspath(os.path.dirname(__file__))
 JSON_PATH = "data.json"
+output_filename = "jajaj"
 
 #path to store model and files
-#output_file = os.path.join(my_path, "./models/test3/test3")
-output_file = "./models/test4/test4"
+output_file = f"./models/{output_filename}/{output_filename}"
+
+#check if output directory exists. If not create directory.
+if not os.path.exists(output_file):
+    os.makedirs(output_file[:-len(output_filename)]) 
+    print("Output directory created.")
 
 def load_data(dataset_path):
     with open(dataset_path, "r") as fp:

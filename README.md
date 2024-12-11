@@ -4,6 +4,18 @@ Since I have worked with this project localy i have stored and tested loads of t
 Also I have created scripts to collect data with different methods. And tried to implement semi-working CNN to collect data, with a better filter than amplitude threshold.
 So I decided to be more structured and created this Repo for Anomaly detection with audio, re-trace my steps and keep track of my project changes.
 
+## CNN theory and notes
+
+Convolutional layer:
+Featuremap image with dot product of pixels(tensors) of the image.
+aply a non-linear activation function (ReLu function).
+
+pooling layer:
+downsample feature map. 
+Keep the important part. 
+Reduce overfitting rate
+
+
 ## Folder Structure
  1. audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.
  2. model 	- Is the folder with the python scripts that creates the CNN-models.

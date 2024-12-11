@@ -10,14 +10,17 @@ from tensorflow.keras.models import Sequential #necaserry?
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten, Conv2D, MaxPooling2D
 #from tensorflow.keras.callbacks import TensorBoard #callback for epochs
 import tensorflow.keras.callbacks
-
 from keras.regularizers import l2
 
 import pandas as pd
 import matplotlib.pyplot as plt
 
-JSON_PATH = "data1.json"
+#my_path = os.path.abspath(os.path.dirname(__file__))
+JSON_PATH = "data.json"
 
+#path to store model and files
+#output_file = os.path.join(my_path, "./models/test3/test3")
+output_file = "./models/test4/test4"
 
 def load_data(dataset_path):
     with open(dataset_path, "r") as fp:
@@ -60,34 +63,34 @@ def build_CNN_model(input_shape):
     model.add(MaxPooling2D(pool_size=(2,2)))
     
     #layer 2 #pass input shape in each layer?!?!?
-    model.add(Conv2D(64,(3,3),input_shape=input_shape, padding='same')) #second layer, no need for input shape second time
+    model.add(Conv2D(64,(3,3), padding='same')) #second layer, no need for input shape second time
     model.add(Activation("relu"))
     model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
     
     #layer 3 --added
-    model.add(Conv2D(128,(3,3),input_shape=input_shape, padding='same')) #thrid layer, no need for input shape second time
+    model.add(Conv2D(128,(3,3), padding='same')) #thrid layer, no need for input shape second time
     model.add(Activation("relu"))
     model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
     
-    #layer 3 --added
-    model.add(Conv2D(256,(3,3),input_shape=input_shape, padding='same')) #thrid layer, no need for input shape second time
-    model.add(Activation("relu"))
-    model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
+    #layer 4 --added
+    #model.add(Conv2D(256,(3,3), padding='same')) #thrid layer, no need for input shape second time
+    #model.add(Activation("relu"))
+    #model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
     
     
     #dense layer --- flatten the 3d to 1d.
     model.add(Flatten())
     
-    model.add(Dense(256, kernel_regularizer=l2(0.01)))
+    model.add(Dense(128, kernel_regularizer=l2(0.02)))
     model.add(Activation("relu"))
-    model.add(Dropout(0.4))  
+    model.add(Dropout(0.35))  
 
     #model.add(Dense(64))
     #model.add(Activation("relu"))
     #model.add(Dropout(0.3))
 
     #output "layer" (activation, not really a layer ?)
-    model.add(Dense(1, kernel_regularizer=l2(0.01)))
+    model.add(Dense(1, kernel_regularizer=l2(0.02)))
     model.add(Activation("sigmoid"))
     
     
@@ -124,8 +127,8 @@ if __name__ == "__main__":
     history = model.fit(
     X_train, y_train,
     validation_data=(X_validation, y_validation),
-    epochs= 50,
-    batch_size=32, #semi 32
+    epochs= 40,
+    batch_size=16, #semi 32
     callbacks=[
         tensorflow.keras.callbacks.EarlyStopping(
             monitor='val_loss',
@@ -137,15 +140,18 @@ if __name__ == "__main__":
     #plot Loss/Accuracy, display model summary and save model
     pd.DataFrame(history.history)[['accuracy','val_accuracy']].plot()
     plt.title("Accuracy")
+    plt.savefig(f'{output_file}_accuracy.png')
+
 
     pd.DataFrame(history.history)[['loss','val_loss']].plot()
     plt.title("Loss")
+    plt.savefig(f'{output_file}_loss.png')
 
     model.summary()
     #Using keras format
-    model.save('test2.keras')
-    #Using keras HDF5
-    #model.save('initial_test.h5')
+    model.save(f'{output_file}.keras')
+    #Using keras HDF5, THIS IS LEGACY, use keras instead.
+    #model.save('{output_file}.h5')
 
 
     #evaluate the CNN on the test set

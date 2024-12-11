@@ -15,6 +15,17 @@ downsample feature map.
 Keep the important part. 
 Reduce overfitting rate
 
+Regularization & dropouts:
+Dropout randomly sets a fraction of the neurons to 0 during training (droppout(0.4) = sets 40% to 0).
+Is a method applied to prevent overfitting and improve generalization.
+Too much droppouts might lead to reducing the performance of the model and might cause underfinning.
+
+L2 regularization reduces the weights in the loss function. This helps to generelize the model and prevent overfitting.
+Higher L2 regularization wieghts can reduce overfitting. (can lead to )
+reducing l2 regularization makes the model ....
+
+
+
 
 ## Folder Structure
  1. audiofiles 	- Includes all the audio data. the wav-files are ignored so ask @AndersLemme for the data.

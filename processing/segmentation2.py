@@ -9,8 +9,8 @@ import wave
 my_path = os.path.abspath(os.path.dirname(__file__))
 
 #Input/output directory
-input_directory = os.path.join(my_path, "../audiofiles/original data/pop")
-output_directory = os.path.join(my_path, "../audiofiles/1/new/")
+input_directory = os.path.join(my_path, "../audiofiles/audio_input")
+output_directory = os.path.join(my_path, "../audiofiles/audio_output/")
 
 #save wav file function
 def save_wav(audio, sample_rate, output_path):
@@ -83,7 +83,7 @@ for filename in os.listdir(input_directory):
             segment = np.pad(segment, (0, segment_samples-len(segment)), 'constant')
 
         #save the segment as a new file     
-        path = os.path.join(my_path, f"{output_directory}{filename}")
+        path = os.path.join(output_directory, filename)
         save_wav(segment,sr, path)
         print("files Saved sucessfully :)")
 

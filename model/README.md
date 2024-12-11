@@ -46,4 +46,4 @@ model.add(Activation("sigmoid"))
 
 Accuracy                                  |  Loss
 :----------------------------------------:|:-------------------------:
-![accuracy](./models/test2_accuracy.png)  | ![loss](./models/test2_loss.png)
+![accuracy](./models/test2/test2_accuracy.png)  | ![loss](./models/test2/test2_loss.png)

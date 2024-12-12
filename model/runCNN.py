@@ -6,6 +6,9 @@ import librosa
 import librosa.display
 import matplotlib.pyplot as plt #plot mfccs
 
+#import local function
+from prepare_aduio import crop_audio
+
 
 SAMPLE_RATE = 48000
 DURATION = 1
@@ -13,16 +16,23 @@ SAMPLES_PER_FILE = SAMPLE_RATE*DURATION
 
 CATEGORIES = ["nopop", "pop"]
 
-model = tf.keras.models.load_model("./models/test3/test3.keras")
+model = tf.keras.models.load_model("./models/test2/test2.keras")
 
 # Folder Path
-path =  "../audiofiles/possible_reserve_nopop/"
-  
-
+path =  "../audiofiles/test/" #possible_reserve_nopop/"
   
   
 def do_everything(file_path, file, model, n_mfcc=13, n_fft=2048, hop_length=512, num_segments=1):
+    # Load the audio file
     audio, sr = librosa.load(file_path, sr=None) #makes sr = 48kHz
+
+    # Get the duration
+    duration = librosa.get_duration(y=audio, sr=sr)
+    print(f"Duration: {duration:.2f} seconds")
+
+    if(duration != DURATION):
+        audio = crop_audio(DURATION, sr,audio)
+
     
     n_sample_seg = int(SAMPLES_PER_FILE/num_segments)   
     expected_number_mfcc_per_segment = np.ceil(n_sample_seg/hop_length)#
@@ -42,8 +52,7 @@ def do_everything(file_path, file, model, n_mfcc=13, n_fft=2048, hop_length=512,
                                             hop_length=hop_length)
         mfcc = mfcc.T
         print("MFCC shape",mfcc.shape)
-        #X = mfcc
-        #y = predicted output (0 or 1)
+
         
         X= mfcc[np.newaxis, ...]
         predict = model.predict([X])
@@ -56,14 +65,15 @@ def do_everything(file_path, file, model, n_mfcc=13, n_fft=2048, hop_length=512,
         y_pred_category = CATEGORIES[int((np.round(predict)))]
         
         # Visualize MFCC coefficients
-        plt.figure()
-        librosa.display.specshow(mfcc, x_axis='time')
-        plt.colorbar()
-        plt.title('MFCC{}| file({}) | prediction = {} = {} '.format(ii,file, predict, y_pred_category))
-        plt.tight_layout()
+        #plt.figure()
+        #librosa.display.specshow(mfcc, x_axis='time')
+        #plt.colorbar()
+        #plt.title('MFCC{}| file({}) | prediction = {} = {} '.format(ii,file, predict, y_pred_category))
+        #plt.tight_layout()
         #plt.show()
         
-        plt.savefig('mfcc{}_file-{}_prediction-{}_category-{}.png'.format(ii,file, predict, y_pred_category))
+        #plt.savefig('mfcc{}_file-{}_prediction-{}_category-{}.png'.format(ii,file, predict, y_pred_category))
+        
         
         #return prediction 1 or 9
         return int(np.round(predict))

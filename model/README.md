@@ -63,6 +63,9 @@ Ouput prediction on test et was 100%.
 Spikes and variability in accuracy especially in earlier epochs might indicate instability in the model's performance.
 The nearly perfect accuracy on the training set, combined with the fluctuations in validation accuracy and loss, may suggest overfitting. This means your model has learned the training data too well and may not generalize perfectly to unseen data.
 
+The results of this Model is aqually quite good when tested on new data.
+However it struggles to identify "silent" nopoping audio as nopop. which is fair because it isn't included in the test data.
+I suggest using the same model parameters to retrain a model on data which include nonpoping data without a high amplitude.
 
 Accuracy                                  |  Loss
 :----------------------------------------:|:-------------------------:

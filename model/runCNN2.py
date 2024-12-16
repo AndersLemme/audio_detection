@@ -165,7 +165,7 @@ if __name__ == "__main__":
     stream_params = StreamParams()
     recorder = Recorder(stream_params)
     
-    file_path = os.path(OUTPUT_PATH, "audio_{}.wav".format(int(time.time())))
+    file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(int(time.time())))
     audio = recorder.record(DURATION, file_path)
 
 

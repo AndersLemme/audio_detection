@@ -53,6 +53,8 @@ This folder contains scripts for training, running and actually also model prepe
 - **au1.py**: This script is used to read trough wav files, convert them to MFCC's and store them in data.json.
 - **au2.py**: This script reads the data.json and train a CNN model.keras to distinguish between pop and no-pop
 - **runCNN.py**: This script imports the model and runs new input images through the model and make output predictions.
+- **runCNN2.py**: This script imports the CNN model and runs it on live data. This is a combination of runCNN.py and aurec.py.
+- **prepare_audio.py**: This script is cropping audio files into 1 second audio around a peak that are inputed into runCNN.py. The script is imported as a library.
 
 ## Processing
 This folder contains python scripts for recording, preprocessing, segmentation and other scripts used for analysis.

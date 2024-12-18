@@ -2,7 +2,7 @@ from dataclasses import dataclass, asdict
 import tensorflow as tf
 import numpy as np
 import os
-import time
+import datetime
 import struct
 import librosa
 import librosa.display
@@ -17,6 +17,9 @@ from collections import deque
 
 OUTPUT_PATH = "./output/"
 DURATION = 1
+CATEGORIES = ["nopop", "pop"]
+model_name="test2"
+MODEL = tf.keras.models.load_model(f"./models/{model_name}/{model_name}.keras")
 
 
 @dataclass
@@ -48,11 +51,10 @@ class Recorder:
         """
         print("Start recording ...")
         self._create_recording_resources(save_path)
-        pop = self._write_wav_file_reading_from_stream(save_path, duration)
+        self._write_wav_file_reading_from_stream(save_path, duration)
         #self._visualize_recording_from_stream(duration)
         self._close_recording_resources()
         print("Stop recording")
-        return pop
         
     def _create_recording_resources(self, save_path: str) -> None:
         self._pyaudio= pyaudio.PyAudio()
@@ -69,104 +71,50 @@ class Recorder:
 
     def _write_wav_file_reading_from_stream(self, save_path, duration: int) -> None:
         
-        pop = 0
         audio_data_frames = []
         
-        fig,(ax, ax1) = plt.subplots(2,)
         x_fft = np.linspace(0,self.stream_params.rate, self.stream_params.frames_per_buffer) #frequency domain x-axis
         x=np.arange(0,2*self.stream_params.frames_per_buffer,2)
-        
-        line_fft, = ax1.semilogx(x_fft, np.random.rand(self.stream_params.frames_per_buffer))
-        line, = ax.plot(x, np.random.rand(self.stream_params.frames_per_buffer), 'r')
-        
-        ax.set_ylim(-30000, 30000) 
-        ax.set_xlim(0, self.stream_params.frames_per_buffer)
-        ax.set_xlabel('samples')
-        ax.set_ylabel('Amplitude')
-        ax1.set_ylim(0,1)
-        ax1.set_xlim(20, self.stream_params.rate/2)
-        ax1.set_xlabel('Frequency')
-        ax1.set_ylabel('Amplitude')
-        fig.show()
         
         for _ in range(int(stream_params.rate * duration / self.stream_params.frames_per_buffer)):
             audio_data = self._stream.read(self.stream_params.frames_per_buffer)
             audio_data_frames.append(audio_data) #append audio data to array
             dataInt = struct.unpack(str(self.stream_params.frames_per_buffer) + 'h', audio_data)
-            line.set_ydata(dataInt)
-            line_fft.set_ydata(np.abs(np.fft.fft(dataInt))*2/(33000*self.stream_params.frames_per_buffer))
-            fig.canvas.draw()
-            fig.canvas.flush_events()
-            if (check_amplitude(dataInt, 15000)):#(any(i > 15000 for i in dataInt)): #(dataInt[_] > 10000):
-                print("High amplitude!! -> send signal to PLC about bag pop")
-                pop += 1
-        if (pop > 0): #if pop write to file, if not don't write
-            self._create_wav_file(save_path)
-            self._wav_file.writeframes(b''.join(audio_data_frames))
-        return pop
+            
+            #if (check_amplitude(dataInt, 15000)): #(any(i > 15000 for i in dataInt)): #(dataInt[_] > 10000):
+            #    print("High amplitude!! -> send signal to PLC about bag pop")
+            #    pop += 1
+        #if (pop > 0): #if pop write to file, if not don't write
+        self._create_wav_file(save_path)
+        self._wav_file.writeframes(b''.join(audio_data_frames))
+
 
     def _close_recording_resources(self) -> None:
         try:
             self._wav_file.close()
-            print("pop occured, wav file saved to .\\Pop\\audio") #C:\\Users\\anders.lemme\\Desktop
+            print("pop occured, wav file saved to .\\Pop\\audio") 
         except Exception as e:
             print("no pop has occured, Wav file will not be saved")
         self._stream.close()
         self._pyaudio.terminate()
-        plt.close()
         
-def check_amplitude(list1, val):
-    pop = 0
-    for x in list1:
-        if val <= x:
-            pop = 1
-    if (pop == 1):
-        time.sleep(0.03) #timer to filter multiple registration of same pop 
-        return True
-    else:
-        return False
-def _write_wav_file_reading_from_stream(self, save_path, duration: int) -> None:
-    frames_per_second = self.stream_params.rate // self.stream_params.frames_per_buffer
-    rolling_buffer = deque(maxlen=frames_per_second)  # Buffer to store 1 second of frames
-    
-    print("Processing 1-second audio segments...")
-    
-    for _ in range(int(self.stream_params.rate * duration / self.stream_params.frames_per_buffer)):
-        audio_data = self._stream.read(self.stream_params.frames_per_buffer)
-        dataInt = struct.unpack(str(self.stream_params.frames_per_buffer) + 'h', audio_data)
-        
-        # Add the current frame to the rolling buffer
-        rolling_buffer.append(dataInt)
-        
-        # When the buffer is full, process the 1-second segment
-        if len(rolling_buffer) == frames_per_second:
-            # Flatten the buffer to create a full 1-second segment
-            window_data = np.concatenate(rolling_buffer)
-            
-            # Perform any desired processing here
-            self._process_one_second_segment(window_data)
-            
-            # Clear the buffer for the next 1-second segment (deque handles this automatically)
 
-    print("Finished processing.")
-    self._create_wav_file(save_path)
-    self._wav_file.writeframes(b''.join(audio_data))  # Save all recorded audio to file
 
-def _process_one_second_segment(self, segment: np.ndarray) -> None:
+def predict_output(self, segment: np.ndarray) -> None:
     """Process a 1-second segment of audio."""
     print(f"Processing a 1-second segment with {len(segment)} samples")
-    
-    # Example: Log or visualize the segment (replace with your own processing)
-    # plt.plot(segment)
-    # plt.show()
+
+
+
 
 if __name__ == "__main__":
-    #_write_wav_file_reading_from_stream(Output_path, 1)
+   
     stream_params = StreamParams()
     recorder = Recorder(stream_params)
     
-    file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(int(time.time())))
-    audio = recorder.record(DURATION, file_path)
+    for i in range(2):
+        file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
+        audio = recorder.record(DURATION, file_path)
 
 
 

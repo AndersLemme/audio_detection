@@ -4,7 +4,7 @@ import numpy as np
 import os
 import datetime
 import struct
-import librosa
+import librosa #load files and convert to MFCC's
 import librosa.display
 import matplotlib.pyplot as plt #plot mfccs
 
@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt #plot mfccs
 import pyaudio #realtime capture
 import wave #Save .wav files
 
-from collections import deque
+from collections import deque #!!!!!! can i delete this??
 
 
 OUTPUT_PATH = "./output/"
@@ -40,19 +40,14 @@ class Recorder:
         self.stream_params = stream_params
         self._pyaudio = None
         self._stream = None
-        self._wav_file = None
+        #self._wav_file = None
 
         
     def record(self, duration: int, save_path: str):
-        """ Record audio from mic for a given amount of time
-        
-        :param duration: Number of seconds we want to record for
-        :param save_path: where to store the recording
-        """
-        print("Start recording ...")
+        """ Record audio from mic for a given amount of time"""
+
         self._create_recording_resources(save_path)
         self._write_wav_file_reading_from_stream(save_path, duration)
-        #self._visualize_recording_from_stream(duration)
         self._close_recording_resources()
         print("Stop recording")
         
@@ -73,26 +68,24 @@ class Recorder:
         
         audio_data_frames = []
         
-        x_fft = np.linspace(0,self.stream_params.rate, self.stream_params.frames_per_buffer) #frequency domain x-axis
         x=np.arange(0,2*self.stream_params.frames_per_buffer,2)
         
         for _ in range(int(stream_params.rate * duration / self.stream_params.frames_per_buffer)):
             audio_data = self._stream.read(self.stream_params.frames_per_buffer)
             audio_data_frames.append(audio_data) #append audio data to array
-            dataInt = struct.unpack(str(self.stream_params.frames_per_buffer) + 'h', audio_data)
+            dataInt = struct.unpack(str(self.stream_params.frames_per_buffer) + 'h', audio_data) #not neccessary at all!
             
             #if (check_amplitude(dataInt, 15000)): #(any(i > 15000 for i in dataInt)): #(dataInt[_] > 10000):
             #    print("High amplitude!! -> send signal to PLC about bag pop")
             #    pop += 1
         #if (pop > 0): #if pop write to file, if not don't write
-        self._create_wav_file(save_path)
-        self._wav_file.writeframes(b''.join(audio_data_frames))
+        #predict_output(self, save_path , audio_data_frames)
 
 
     def _close_recording_resources(self) -> None:
         try:
             self._wav_file.close()
-            print("pop occured, wav file saved to .\\Pop\\audio") 
+            print(f"pop occured, wav file saved to {OUTPUT_PATH}pop")
         except Exception as e:
             print("no pop has occured, Wav file will not be saved")
         self._stream.close()
@@ -100,10 +93,14 @@ class Recorder:
         
 
 
-def predict_output(self, segment: np.ndarray) -> None:
+def predict_output(self, save_path, audio_data) -> None:
     """Process a 1-second segment of audio."""
-    print(f"Processing a 1-second segment with {len(segment)} samples")
+    #print(f"Processing a 1-second segment with {len(segment)} samples")
+    #print("type of audio", audio_data)
 
+
+    self._create_wav_file(save_path)
+    self._wav_file.writeframes(b''.join(audio_data))
 
 
 
@@ -115,6 +112,8 @@ if __name__ == "__main__":
     for i in range(2):
         file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
         audio = recorder.record(DURATION, file_path)
+        print("audio == : ", audio)
+
 
 
 

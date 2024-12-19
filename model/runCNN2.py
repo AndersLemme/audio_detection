@@ -41,22 +41,23 @@ class Recorder:
         self._stream = None
 
         
-    def record(self, duration: int, save_path: str):
+    def record(self, duration: int):
         """ Record audio from mic for a given amount of time"""
 
-        self.create_recording_resources(save_path)
-        audio_signal = self.reading_from_stream(save_path, duration) #record audio
+        self.create_recording_resources()
+        audio_signal = self.reading_from_stream(duration) #record audio
         self.close_recording_resources()
         print("Stop recording")
         return audio_signal
         
-    def create_recording_resources(self, save_path: str) -> None:
+        
+    def create_recording_resources(self: str) -> None:
         self._pyaudio= pyaudio.PyAudio()
         self._stream = self._pyaudio.open(**self.stream_params.to_dict())
         
         
 
-    def reading_from_stream(self, save_path, duration: int) -> None:
+    def reading_from_stream(self, duration: int) -> None:
         """Capture audio data and convert it to a NumPy array."""
         print("start recording...") 
         audio_data_frames = []
@@ -82,7 +83,14 @@ class Recorder:
         self._stream.close()
         self._pyaudio.terminate()
         
-
+def save_wav(file_path, audio ):
+    print("save function is called")
+    with wave.open(file_path, "wb") as wf: #or "wb" but it is written in binary mode anyways
+        print("inside with open wave")
+        wf.setnchannels(1)  # Mono audio
+        wf.setsampwidth(2)  # 2 bytes for 16-bit audio
+        wf.setframerate(sr)  # Sampling rate
+        wf.writeframes(audio.tobytes())
 
 if __name__ == "__main__":
     #Define counter for predicted pop/nopop
@@ -99,8 +107,8 @@ if __name__ == "__main__":
     SAMPLES_PER_FILE = stream_params.rate*DURATION
     
     for i in range(10):
-        file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
-        audio = recorder.record(DURATION, file_path)
+        
+        audio = recorder.record(DURATION)
         #print("audio == : ", audio)
 
         duration = librosa.get_duration(y=audio, sr=sr)
@@ -111,9 +119,7 @@ if __name__ == "__main__":
 
 
         n_sample_seg = int(SAMPLES_PER_FILE/num_segments)   
-        expected_number_mfcc_per_segment = np.ceil(n_sample_seg/hop_length)#
-
-        ii=0
+        expected_number_mfcc_per_segment = np.ceil(n_sample_seg/hop_length)
 
         for s in range(num_segments): #for each segments -- (kept at 1)
             start_sample = n_sample_seg *s
@@ -140,8 +146,14 @@ if __name__ == "__main__":
             y_pred_category = CATEGORIES[prediction]
             print(y_pred_category)
             if(prediction == 0):
+                file_path = os.path.join(OUTPUT_PATH, "audio_{}_nopop.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
+                save_wav(file_path, audio)
+                print("save nopop")
                 cnt_nopop += 1
-            elif(prediction==1):
+            elif(prediction ==1):
+                file_path = os.path.join(OUTPUT_PATH, "audio_{}_pop.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
+                save_wav(file_path, audio)
+                print("save pop")
                 cnt_pop += 1
             
         #Print number predictions

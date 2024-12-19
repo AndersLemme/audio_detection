@@ -14,7 +14,6 @@ import pyaudio #realtime capture
 import wave #Save .wav files
 
 
-
 OUTPUT_PATH = "./output/"
 DURATION = 1
 CATEGORIES = ["nopop", "pop"]
@@ -85,13 +84,6 @@ class Recorder:
         
 
 
-def predict_output(self, save_path, audio_data) -> None:
-    """Process a 1-second segment of audio."""
-    self._create_wav_file(save_path)
-    self._wav_file.writeframes(b''.join(audio_data))
-
-
-
 if __name__ == "__main__":
     #Define counter for predicted pop/nopop
     cnt_pop = 0
@@ -109,7 +101,7 @@ if __name__ == "__main__":
     for i in range(10):
         file_path = os.path.join(OUTPUT_PATH, "audio_{}.wav".format(datetime.datetime.now().strftime("%d-%m-%Y_%H-%M-%S")))
         audio = recorder.record(DURATION, file_path)
-        print("audio == : ", audio)
+        #print("audio == : ", audio)
 
         duration = librosa.get_duration(y=audio, sr=sr)
         print(f"Duration: {duration:.2f} seconds")
@@ -139,20 +131,17 @@ if __name__ == "__main__":
 
 
             X= mfcc[np.newaxis, ...]
-            predict = MODEL.predict([X])
+            predict = MODEL.predict(X)
             
             print(predict)
-            print(int(np.round(predict)))
-            print(CATEGORIES[int((np.round(predict)))])
 
-            y_pred_round = int(np.round(predict))
-            y_pred_category = CATEGORIES[int((np.round(predict)))]
-
-            #return prediction 1 or 9
-            prediction = int(np.round(predict))
-            if(predict == 0):
+            prediction = int(np.round(predict).item())
+            print("prediction =", prediction)
+            y_pred_category = CATEGORIES[prediction]
+            print(y_pred_category)
+            if(prediction == 0):
                 cnt_nopop += 1
-            elif(predict==1):
+            elif(prediction==1):
                 cnt_pop += 1
             
         #Print number predictions

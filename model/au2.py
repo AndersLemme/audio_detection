@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 #my_path = os.path.abspath(os.path.dirname(__file__))
 JSON_PATH = "data.json"
-output_filename = "jajaj"
+output_filename = "test2_rev3"
 
 #path to store model and files
 output_file = f"./models/{output_filename}/{output_filename}"
@@ -78,24 +78,24 @@ def build_CNN_model(input_shape):
     model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
     
     #layer 4 --added
-    #model.add(Conv2D(256,(3,3), padding='same')) #thrid layer, no need for input shape second time
-    #model.add(Activation("relu"))
-    #model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
+    model.add(Conv2D(256,(3,3), padding='same')) #thrid layer, no need for input shape second time
+    model.add(Activation("relu"))
+    model.add(MaxPooling2D((3,3),strides=(2,2),padding='same'))#pool_size=(2,2)))
     
     
     #dense layer --- flatten the 3d to 1d.
     model.add(Flatten())
     
-    model.add(Dense(128, kernel_regularizer=l2(0.02)))
+    model.add(Dense(256, kernel_regularizer=l2(0.01)))
     model.add(Activation("relu"))
-    model.add(Dropout(0.35))  
+    model.add(Dropout(0.4))  
 
     #model.add(Dense(64))
     #model.add(Activation("relu"))
     #model.add(Dropout(0.3))
 
     #output "layer" (activation, not really a layer ?)
-    model.add(Dense(1, kernel_regularizer=l2(0.02)))
+    model.add(Dense(1, kernel_regularizer=l2(0.01)))
     model.add(Activation("sigmoid"))
     
     
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     X_train, y_train,
     validation_data=(X_validation, y_validation),
     epochs= 40,
-    batch_size=16, #semi 32
+    batch_size=32, #semi 32
     callbacks=[
         tensorflow.keras.callbacks.EarlyStopping(
             monitor='val_loss',

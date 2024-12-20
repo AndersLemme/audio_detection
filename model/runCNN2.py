@@ -17,7 +17,7 @@ import wave #Save .wav files
 OUTPUT_PATH = "./output/"
 DURATION = 1
 CATEGORIES = ["nopop", "pop"]
-model_name="test2"
+model_name="test2_rev3"
 MODEL = tf.keras.models.load_model(f"./models/{model_name}/{model_name}.keras")
 
 
@@ -26,7 +26,7 @@ class StreamParams:
     format: int = pyaudio.paInt16
     channels: int = 1
     rate: int = 48000
-    frames_per_buffer: int = 1024*2 #frames per sec?
+    frames_per_buffer: int = 1024*4 #frames per sec?
     input: bool = True
     output: bool = False
     
@@ -76,6 +76,8 @@ class Recorder:
         
         print("Recording complete")
         audio_signal = np.array(audio_data_frames, dtype=np.float32) / 32768.0 #normalize
+        print("audio_data_frames length = ", len(audio_data_frames))
+        print("audio_data length = ", len(audio_signal))
         return audio_signal
 
     def close_recording_resources(self) -> None:
